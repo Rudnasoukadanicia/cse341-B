@@ -1,0 +1,45 @@
+/recupere tout les contact
+
+GET http://127.0.0.1:3000/contacts/page
+Accept: application/json
+
+GET http://127.0.0.1:3000/contacts/contact?id=6aeb608b19acd5759deb764a
+Accept: application/json
+
+### Créer un nouveau contact
+POST http://127.0.0.1:3000/contacts
+Content-Type: application/json
+Accept: application/json
+
+{
+    "firstName": "David",
+    "lastName": "Martin",
+    "email": "david.test@example.com",
+    "favoriteColor": "Blue",
+    "birthday": "1998-05-12"
+}
+
+### Modifier le contact de David
+PUT http://127.0.0.1:3000/contacts/6af1d99b28b36d149e8a5e9b
+Content-Type: application/json
+Accept: application/json
+
+{
+    "firstName": "David",
+    "lastName": "Martin",
+    "email": "david.test@example.com",
+    "favoriteColor": "Green",
+    "birthday": "1998-05-12"
+}
+
+### Vérifier le contact de David
+GET http://127.0.0.1:3000/contacts/contact?id=6af1d99b28b36d149e8a5e9b
+Accept: application/json
+
+### Supprimer le contact de David
+DELETE http://127.0.0.1:3000/contacts/6af1d99b28b36d149e8a5e9b
+Accept: application/json
+
+### Vérifier que David a été supprimé
+GET http://127.0.0.1:3000/contacts/contact?id=6af1d99b28b36d149e8a5e9b
+Accept: application/json
