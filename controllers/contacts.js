@@ -8,11 +8,10 @@ const getAllContacts = async (req, res) => {
         const contacts = await db.collection('contacts').find().toArray();
 
         res.status(200).json(contacts);
-
     } catch (error) {
         res.status(500).json({
             message: 'Error retrieving contacts',
-            error: error.message
+            error: error.message,
         });
     }
 };
@@ -26,59 +25,44 @@ const getContactById = async (req, res) => {
             return res.status(400).json({ message: 'Invalid contact ID' });
         }
 
-        const contact = await db.collection('contacts').findOne({ _id: new ObjectId(contactId) });
+        const contact = await db
+            .collection('contacts')
+            .findOne({ _id: new ObjectId(contactId) });
 
         if (!contact) {
             return res.status(404).json({ message: 'Contact not found' });
         }
         res.status(200).json(contact);
-    }
-    
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             message: 'Error retrieving contact',
-            error: error.message
+            error: error.message,
         });
     }
-}
+};
 
 const getContactPage = async (req, res) => {
     try {
         const db = getDatabase();
-        const contacts = await db.collection('contacts').find()
-        .toArray();
+        const contacts = await db.collection('contacts').find().toArray();
         res.render('contacts', { contacts });
-
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             message: 'Error retrieving contact',
-            error: error.message
+            error: error.message,
         });
     }
-
-}
+};
 //  Créer un nouveau contact
 const createContact = async (req, res) => {
     try {
-        const {
-            firstName,
-            lastName,
-            email,
-            favoriteColor,
-            birthday
-        } = req.body;
+        const { firstName, lastName, email, favoriteColor, birthday } =
+            req.body;
 
         // Vérifier que tous les champs sont remplis
-        if (
-            !firstName ||
-            !lastName ||
-            !email ||
-            !favoriteColor ||
-            !birthday
-        ) {
+        if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
             return res.status(400).json({
-                message: 'All fields are required'
+                message: 'All fields are required',
             });
         }
 
@@ -90,51 +74,39 @@ const createContact = async (req, res) => {
             lastName,
             email,
             favoriteColor,
-            birthday
+            birthday,
         });
 
         // Retourner le nouvel identifiant
         return res.status(201).json({
-            contactId: result.insertedId
+            contactId: result.insertedId,
         });
-
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
-            message: 'Error creating contact'
+            message: 'Error creating contact',
         });
     }
 };
 
-//  Modifier un contact 
+//  Modifier un contact
 const updateContact = async (req, res) => {
     try {
         const id = req.params.id;
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({
-                message: 'Invalid contact ID'
+                message: 'Invalid contact ID',
             });
         }
 
-        const {
-            firstName,
-            lastName,
-            email,
-            favoriteColor,
-            birthday
-        } = req.body;
+        const { firstName, lastName, email, favoriteColor, birthday } =
+            req.body;
 
-        if (
-            !firstName ||
-            !lastName ||
-            !email ||
-            !favoriteColor ||
-            !birthday
-        ) {
+        if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
             return res.status(400).json({
-                message: 'All fields are required'
+                message: 'All fields are required',
             });
         }
 
@@ -148,65 +120,70 @@ const updateContact = async (req, res) => {
                     lastName,
                     email,
                     favoriteColor,
-                    birthday
-                }
+                    birthday,
+                },
             }
         );
 
         if (result.matchedCount === 0) {
             return res.status(404).json({
-                message: 'Contact not found'
+                message: 'Contact not found',
             });
         }
 
         return res.status(204).send();
-
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
-            message: 'Error updating contact'
+            message: 'Error updating contact',
         });
     }
 };
 
-// supprimer un contact 
+// supprimer un contact
 const deleteContact = async (req, res) => {
     try {
         const id = req.params.id;
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({
-                message: 'Invalid contact ID'
+                message: 'Invalid contact ID',
             });
         }
 
         const db = getDatabase();
 
         const result = await db.collection('contacts').deleteOne({
-            _id: new ObjectId(id)
+            _id: new ObjectId(id),
         });
 
         if (result.deletedCount === 0) {
             return res.status(404).json({
-                message: 'Contact not found'
+                message: 'Contact not found',
             });
         }
 
         return res.status(200).json({
-            message: 'Contact deleted successfully'
+            message: 'Contact deleted successfully',
         });
-
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
-            message: 'Error deleting contact'
+            message: 'Error deleting contact',
         });
     }
 };
 
-export { getAllContacts, getContactById, getContactPage, createContact, updateContact, deleteContact };
+export {
+    getAllContacts,
+    getContactById,
+    getContactPage,
+    createContact,
+    updateContact,
+    deleteContact,
+};
 
 // Code	Explication
 // getDatabase()	Récupère notre base MongoDB

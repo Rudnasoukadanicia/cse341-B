@@ -18,9 +18,9 @@ app.use('/', router);
 connectToDatabase()
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`Server is running at http://127.0.0.1:${PORT}`)
+            console.log(`Server is running at http://127.0.0.1:${PORT}`);
         });
     })
     .catch((error) => {
         console.error('Failed to connect to the database:', error);
-    })
+    });

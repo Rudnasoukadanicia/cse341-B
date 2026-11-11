@@ -6,7 +6,7 @@ import {
     getContactPage,
     createContact,
     updateContact,
-    deleteContact
+    deleteContact,
 } from '../controllers/contacts.js';
 
 const router = express.Router();
